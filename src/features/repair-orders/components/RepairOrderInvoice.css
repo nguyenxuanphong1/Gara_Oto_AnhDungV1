@@ -1,0 +1,1556 @@
+/* =========================================================
+   GARA Ô TÔ ANH DŨNG
+   HÓA ĐƠN A5
+   KHỔ GIẤY: 148mm × 210mm
+   ========================================================= */
+
+/* =========================================================
+   RESET RIÊNG CHO HÓA ĐƠN
+   ========================================================= */
+
+.repair-invoice-page,
+.repair-invoice-page *,
+.repair-invoice-modal,
+.repair-invoice-modal * {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.repair-invoice-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow-y: auto;
+
+  padding: 24px;
+
+  background:
+    rgba(15, 23, 42, 0.72);
+
+  backdrop-filter: blur(5px);
+}
+
+/* =========================================================
+   HEADER XEM TRƯỚC
+   ========================================================= */
+
+.repair-invoice-modal-header {
+  width: min(
+    900px,
+    100%
+  );
+
+  min-height: 64px;
+
+  margin:
+    0 auto 16px;
+
+  padding:
+    10px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      15,
+      23,
+      42,
+      0.16
+    );
+}
+
+.repair-invoice-modal-heading {
+  min-width: 0;
+}
+
+.repair-invoice-modal-title {
+  color: #0f172a;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.repair-invoice-modal-code {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.2;
+}
+
+.repair-invoice-modal-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   NÚT IN
+   ========================================================= */
+
+.repair-invoice-print-button {
+  height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding:
+    0 16px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #dc2626;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.repair-invoice-print-button:hover {
+  background: #b91c1c;
+}
+
+.repair-invoice-print-button:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   NÚT ĐÓNG
+   ========================================================= */
+
+.repair-invoice-close-button {
+  width: 40px;
+
+  height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid
+    #cbd5e1;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.repair-invoice-close-button:hover {
+  background: #f8fafc;
+
+  color: #0f172a;
+}
+
+/* =========================================================
+   MODAL CONTENT
+   ========================================================= */
+
+.repair-invoice-modal-content {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.repair-invoice-page {
+  width: 100%;
+
+  min-height: 100%;
+
+  padding: 0;
+
+  margin: 0;
+
+  background: transparent;
+
+  color: #111827;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+/* =========================================================
+   A5 PAPER
+   ========================================================= */
+
+.repair-invoice-paper {
+  position: relative;
+
+  width: 148mm;
+
+  height: 210mm;
+
+  min-width: 148mm;
+
+  max-width: 148mm;
+
+  min-height: 210mm;
+
+  max-height: 210mm;
+
+  margin: 0 auto;
+
+  padding: 4mm;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  box-shadow:
+    0 20px 50px
+    rgba(
+      15,
+      23,
+      42,
+      0.22
+    );
+}
+
+/* =========================================================
+   MÃ ĐẦU
+   ========================================================= */
+
+.repair-invoice-top-code {
+  width: 100%;
+
+  height: 9mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #111111;
+
+  font-size: 8.8px;
+
+  font-weight: 500;
+
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   HÓA ĐƠN A5
+   ========================================================= */
+
+.repair-invoice-a5-title {
+  width: 100%;
+
+  height: 8mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #111111;
+
+  font-size: 18px;
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   KHUNG CHÍNH
+   ========================================================= */
+
+.repair-invoice-main-border {
+  position: relative;
+
+  width: 100%;
+
+  height: 147mm;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #222222;
+
+  background: #ffffff;
+
+  isolation: isolate;
+}
+
+/* =========================================================
+   WATERMARK
+   ========================================================= */
+
+.repair-invoice-watermark {
+  position: absolute;
+
+  z-index: 0;
+
+  left: 50%;
+
+  top: 67%;
+
+  width: 67mm;
+
+  height: 67mm;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  background-repeat: no-repeat;
+
+  background-position: center;
+
+  background-size: contain;
+
+  opacity: 0.12;
+
+  pointer-events: none;
+
+  user-select: none;
+}
+
+/* =========================================================
+   ĐƯỜNG GẠCH TRÊN
+   ========================================================= */
+
+.repair-invoice-top-divider {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 7mm;
+
+  border-bottom:
+    1px dashed
+    #333333;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+}
+
+/* =========================================================
+   COMPANY HEADER
+   ========================================================= */
+
+.repair-invoice-company-header {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 28mm;
+
+  display: flex;
+
+  align-items: center;
+
+  padding:
+    1.5mm 3mm;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.93
+    );
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.repair-invoice-logo-container {
+  width: 29mm;
+
+  min-width: 29mm;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.repair-invoice-logo {
+  display: block;
+
+  width: 25mm;
+
+  height: 25mm;
+
+  object-fit: contain;
+}
+
+/* =========================================================
+   COMPANY INFO
+   ========================================================= */
+
+.repair-invoice-company-info {
+  flex: 1;
+
+  min-width: 0;
+
+  text-align: center;
+}
+
+.repair-invoice-company-title {
+  width: 100%;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  color: #111111;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  line-height: 1.05;
+}
+
+.repair-invoice-company-name {
+  margin:
+    0.8mm 0;
+
+  color: #f3b000;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: 0.1px;
+
+  text-shadow:
+    0.3px 0 #111111,
+    -0.3px 0 #111111,
+    0 0.3px #111111,
+    0 -0.3px #111111;
+}
+
+.repair-invoice-company-line {
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  color: #111111;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  line-height: 1.15;
+}
+
+/* =========================================================
+   DOCUMENT TITLE
+   ========================================================= */
+
+.repair-invoice-document-title {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 6mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #111111;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  text-decoration:
+    underline;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+}
+
+/* =========================================================
+   CUSTOMER INFO
+   ========================================================= */
+
+.repair-invoice-customer-info {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 13mm;
+
+  padding:
+    0.5mm 3mm;
+
+  border-bottom:
+    1px solid
+    #222222;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.93
+    );
+}
+
+.repair-invoice-info-row {
+  width: 100%;
+
+  height: 6mm;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 2.5mm;
+}
+
+.repair-invoice-info-block {
+  min-width: 0;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 1mm;
+
+  color: #111111;
+
+  font-size: 7px;
+
+  line-height: 1;
+}
+
+.repair-invoice-info-customer {
+  flex: 1.6;
+}
+
+.repair-invoice-info-phone {
+  flex: 0.9;
+}
+
+.repair-invoice-info-license {
+  flex: 1.15;
+}
+
+.repair-invoice-info-model {
+  flex: 0.95;
+}
+
+.repair-invoice-info-km {
+  flex: 0.7;
+}
+
+.repair-invoice-info-label {
+  flex-shrink: 0;
+
+  white-space: nowrap;
+
+  font-weight: 700;
+}
+
+.repair-invoice-dotted {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 4mm;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  overflow: hidden;
+
+  padding-bottom: 0.3mm;
+
+  border-bottom:
+    1px dotted
+    #333333;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   TABLE CONTAINER
+   ========================================================= */
+
+.repair-invoice-table-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 72mm;
+
+  overflow: hidden;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.repair-invoice-table {
+  width: 100%;
+
+  height: 72mm;
+
+  margin: 0;
+
+  padding: 0;
+
+  border-collapse: collapse;
+
+  border-spacing: 0;
+
+  table-layout: fixed;
+
+  color: #111111;
+
+  font-size: 6.7px;
+
+  background: transparent;
+}
+
+/* =========================================================
+   COLUMN WIDTH
+   ========================================================= */
+
+.invoice-col-stt {
+  width: 6%;
+}
+
+.invoice-col-name {
+  width: 49%;
+}
+
+.invoice-col-qty {
+  width: 8%;
+}
+
+.invoice-col-price {
+  width: 18.5%;
+}
+
+.invoice-col-total {
+  width: 18.5%;
+}
+
+/* =========================================================
+   CELLS
+   ========================================================= */
+
+.repair-invoice-table th,
+.repair-invoice-table td {
+  margin: 0;
+
+  padding:
+    0.35mm 0.7mm;
+
+  border-right:
+    1px solid
+    #222222;
+
+  border-bottom:
+    1px solid
+    #222222;
+
+  vertical-align: middle;
+
+  line-height: 1;
+
+  overflow: hidden;
+}
+
+.repair-invoice-table th:last-child,
+.repair-invoice-table td:last-child {
+  border-right: 0;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.repair-invoice-table thead tr {
+  height: 6mm;
+}
+
+.repair-invoice-table thead th {
+  height: 6mm;
+
+  padding:
+    0.4mm;
+
+  text-align: center;
+
+  font-size: 6.5px;
+
+  font-weight: 900;
+
+  line-height: 1.05;
+
+  background: #fbc21a;
+}
+
+/* =========================================================
+   DETAIL ROW
+   ========================================================= */
+
+.repair-invoice-detail-row,
+.repair-invoice-empty-row {
+  height: 4.2mm;
+}
+
+.repair-invoice-detail-row td,
+.repair-invoice-empty-row td {
+  height: 4.2mm;
+}
+
+/* =========================================================
+   STT
+   ========================================================= */
+
+.invoice-center {
+  text-align: center;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ITEM NAME
+   ========================================================= */
+
+.invoice-item-name {
+  padding-left: 1.4mm !important;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+  font-size: 6.5px;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   SỐ
+   ========================================================= */
+
+.invoice-number {
+  padding-right: 1.3mm !important;
+
+  text-align: right;
+
+  white-space: nowrap;
+
+  font-size: 6.3px;
+}
+
+/* =========================================================
+   EMPTY ROW
+   ========================================================= */
+
+.repair-invoice-empty-row td {
+  background: transparent;
+}
+
+/* =========================================================
+   TIỀN CÔNG + GIẢM GIÁ
+   ========================================================= */
+
+.repair-invoice-labor-row,
+.repair-invoice-discount-row {
+  height: 4.5mm;
+}
+
+.repair-invoice-labor-row td,
+.repair-invoice-discount-row td {
+  height: 4.5mm;
+}
+
+.repair-invoice-summary-label {
+  text-align: center;
+
+  font-size: 6.8px;
+
+  font-weight: 900;
+
+  background: #fbc21a;
+}
+
+.repair-invoice-summary-value {
+  padding-right: 1.3mm !important;
+
+  text-align: right;
+
+  white-space: nowrap;
+
+  font-size: 6.5px;
+
+  font-weight: 900;
+
+  background: #fbc21a;
+}
+
+/* =========================================================
+   TỔNG CỘNG
+   ========================================================= */
+
+.repair-invoice-total-row {
+  height: 6mm;
+}
+
+.repair-invoice-total-row td {
+  height: 6mm;
+}
+
+.repair-invoice-total-label {
+  padding-left: 3mm !important;
+
+  text-align: left;
+
+  font-size: 7.5px;
+
+  font-weight: 900;
+
+  background: #fbc21a;
+}
+
+.repair-invoice-total-value {
+  padding-right: 1.3mm !important;
+
+  text-align: right;
+
+  white-space: nowrap;
+
+  font-size: 7.5px;
+
+  font-weight: 900;
+
+  background: #fbc21a;
+}
+
+/* =========================================================
+   NGÀY
+   ========================================================= */
+
+.repair-invoice-date {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 4mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  padding:
+    0 3mm;
+
+  color: #111111;
+
+  font-size: 6.5px;
+
+  font-style: italic;
+
+  line-height: 1;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+}
+
+/* =========================================================
+   CHỮ KÝ
+   ========================================================= */
+
+.repair-invoice-signature-area {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 12mm;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  text-align: center;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+}
+
+.repair-invoice-signature {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: flex-start;
+
+  padding-top: 0.5mm;
+}
+
+.repair-invoice-signature strong {
+  width: 100%;
+
+  color: #111111;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  line-height: 1;
+}
+
+/* =========================================================
+   CẢM ƠN
+   ========================================================= */
+
+.repair-invoice-thank-you {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  height: 5mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    0 2mm;
+
+  color: #111111;
+
+  text-align: center;
+
+  font-size: 6.5px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+}
+
+/* =========================================================
+   WARNING BOX
+   ========================================================= */
+
+.repair-invoice-warning {
+  position: relative;
+
+  width: 100%;
+
+  height: 20mm;
+
+  margin-top: 2mm;
+
+  padding:
+    1mm 2mm;
+
+  overflow: hidden;
+
+  border:
+    1.2px solid
+    #b91c1c;
+
+  background: #fffdf5;
+
+  color: #111111;
+}
+
+/* =========================================================
+   WARNING DÒNG 1
+   ========================================================= */
+
+.repair-invoice-warning-line-1 {
+  width: 100%;
+
+  height: 4mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  font-size: 6.1px;
+
+  font-style: italic;
+
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+/* =========================================================
+   WARNING DÒNG 2
+   ========================================================= */
+
+.repair-invoice-warning-line-2 {
+  width: 100%;
+
+  height: 4.5mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: #c2413b;
+
+  font-size: 6.8px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  text-decoration: underline;
+}
+
+/* =========================================================
+   WARNING DANGER
+   ========================================================= */
+
+.repair-invoice-warning-bottom {
+  width: 100%;
+
+  height: 8mm;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4mm;
+}
+
+.repair-invoice-alert-icon {
+  width: 7mm;
+
+  height: 7mm;
+
+  flex-shrink: 0;
+
+  color: #111111;
+
+  stroke-width: 2.5;
+}
+
+.repair-invoice-warning-danger {
+  flex: 1;
+
+  text-align: center;
+
+  color: #111111;
+
+  font-size: 6.5px;
+
+  font-weight: 900;
+
+  line-height: 1.15;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .repair-invoice-modal {
+    padding: 10px;
+
+    overflow-x: auto;
+  }
+
+  .repair-invoice-modal-header {
+    width: 148mm;
+
+    min-width: 148mm;
+
+    margin-left: auto;
+
+    margin-right: auto;
+  }
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@page {
+  size: A5 portrait;
+
+  margin: 0;
+}
+
+@media print {
+
+  /* =======================================================
+     CHỈ IN HÓA ĐƠN
+     ======================================================= */
+
+  html,
+  body {
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    background: #ffffff !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+
+    print-color-adjust: exact !important;
+  }
+
+  /*
+   * ẨN TOÀN BỘ APP.
+   * Sau đó bật riêng modal hóa đơn.
+   */
+  body * {
+    visibility: hidden !important;
+  }
+
+  .repair-invoice-modal,
+  .repair-invoice-modal * {
+    visibility: visible !important;
+  }
+
+  /* =======================================================
+     MODAL
+     ======================================================= */
+
+  .repair-invoice-modal {
+    position: absolute !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    width: 148mm !important;
+
+    height: 210mm !important;
+
+    min-width: 148mm !important;
+
+    max-width: 148mm !important;
+
+    min-height: 210mm !important;
+
+    max-height: 210mm !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    background: #ffffff !important;
+
+    backdrop-filter: none !important;
+  }
+
+  /* =======================================================
+     HEADER XEM TRƯỚC
+     ======================================================= */
+
+  .repair-invoice-modal-header,
+  .no-print {
+    display: none !important;
+  }
+
+  /* =======================================================
+     CONTENT
+     ======================================================= */
+
+  .repair-invoice-modal-content {
+    display: block !important;
+
+    width: 148mm !important;
+
+    height: 210mm !important;
+
+    min-width: 148mm !important;
+
+    max-width: 148mm !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+  }
+
+  /* =======================================================
+     PAGE
+     ======================================================= */
+
+  .repair-invoice-page {
+    width: 148mm !important;
+
+    height: 210mm !important;
+
+    min-width: 148mm !important;
+
+    max-width: 148mm !important;
+
+    min-height: 210mm !important;
+
+    max-height: 210mm !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    background: #ffffff !important;
+  }
+
+  /* =======================================================
+     PAPER
+     ======================================================= */
+
+  .repair-invoice-paper {
+    width: 148mm !important;
+
+    height: 210mm !important;
+
+    min-width: 148mm !important;
+
+    max-width: 148mm !important;
+
+    min-height: 210mm !important;
+
+    max-height: 210mm !important;
+
+    margin: 0 !important;
+
+    padding: 4mm !important;
+
+    overflow: hidden !important;
+
+    box-shadow: none !important;
+
+    background: #ffffff !important;
+
+    page-break-before: avoid !important;
+
+    page-break-after: avoid !important;
+
+    page-break-inside: avoid !important;
+
+    break-before: avoid-page !important;
+
+    break-after: avoid-page !important;
+
+    break-inside: avoid-page !important;
+  }
+
+  /* =======================================================
+     MAIN BORDER
+     ======================================================= */
+
+  .repair-invoice-main-border {
+    width: 100% !important;
+
+    height: 147mm !important;
+
+    min-height: 147mm !important;
+
+    max-height: 147mm !important;
+
+    overflow: hidden !important;
+
+    page-break-inside: avoid !important;
+
+    break-inside: avoid-page !important;
+  }
+
+  /* =======================================================
+     TOP
+     ======================================================= */
+
+  .repair-invoice-top-code {
+    height: 9mm !important;
+  }
+
+  .repair-invoice-a5-title {
+    height: 8mm !important;
+  }
+
+  /* =======================================================
+     COMPANY
+     ======================================================= */
+
+  .repair-invoice-top-divider {
+    height: 7mm !important;
+  }
+
+  .repair-invoice-company-header {
+    height: 28mm !important;
+  }
+
+  .repair-invoice-logo {
+    width: 25mm !important;
+
+    height: 25mm !important;
+  }
+
+  /* =======================================================
+     CUSTOMER
+     ======================================================= */
+
+  .repair-invoice-document-title {
+    height: 6mm !important;
+  }
+
+  .repair-invoice-customer-info {
+    height: 13mm !important;
+  }
+
+  /* =======================================================
+     TABLE
+     ======================================================= */
+
+  .repair-invoice-table-container {
+    height: 72mm !important;
+
+    overflow: hidden !important;
+  }
+
+  .repair-invoice-table {
+    height: 72mm !important;
+  }
+
+  .repair-invoice-table thead tr {
+    height: 6mm !important;
+  }
+
+  .repair-invoice-detail-row,
+  .repair-invoice-empty-row {
+    height: 4.2mm !important;
+  }
+
+  .repair-invoice-labor-row,
+  .repair-invoice-discount-row {
+    height: 4.5mm !important;
+  }
+
+  .repair-invoice-total-row {
+    height: 6mm !important;
+  }
+
+  /* =======================================================
+     FOOTER MAIN
+     ======================================================= */
+
+  .repair-invoice-date {
+    height: 4mm !important;
+  }
+
+  .repair-invoice-signature-area {
+    height: 12mm !important;
+  }
+
+  .repair-invoice-thank-you {
+    height: 5mm !important;
+  }
+
+  /* =======================================================
+     WARNING
+     ======================================================= */
+
+  .repair-invoice-warning {
+    width: 100% !important;
+
+    height: 20mm !important;
+
+    margin-top: 2mm !important;
+
+    overflow: hidden !important;
+
+    page-break-inside: avoid !important;
+
+    break-inside: avoid-page !important;
+  }
+
+  /* =======================================================
+     KHÔNG CHIA TRANG
+     ======================================================= */
+
+  .repair-invoice-page,
+  .repair-invoice-paper,
+  .repair-invoice-main-border,
+  .repair-invoice-company-header,
+  .repair-invoice-customer-info,
+  .repair-invoice-table-container,
+  .repair-invoice-warning {
+    page-break-inside: avoid !important;
+
+    break-inside: avoid-page !important;
+  }
+}

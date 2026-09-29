@@ -2,10 +2,13 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
 import LoginPage from "../../features/auth/components/LoginPage";
-import DashboardPage from "../../features/dashboard/DashboardPage";
+import DashboardPage from "../../pages/DashboardPage";
 import CustomersPage from "../../features/customers/CustomersPage";
 import VehiclesPage from "../../features/vehicles/VehiclesPage";
-import PlaceholderPage from "../../pages/PlaceholderPage";
+import WarehousesPage from "../../features/warehouses/WarehousesPage";
+import InventoryItemsPage from "../../features/inventory/InventoryItemsPage";
+import StockImportsPage from "../../features/stock-imports/StockImportsPage";
+import RepairOrdersPage from "../../features/repair-orders/RepairOrdersPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -22,54 +25,22 @@ function AppRoutes() {
           <Route path="/" element={<DashboardPage />} />
 
           {/* Khách hàng */}
-          <Route path="/customers" element={<CustomersPage />}/>
+          <Route path="/customers" element={<CustomersPage />} />
 
           {/* Xe */}
-          <Route path="/vehicles" element={<VehiclesPage />}/>
+          <Route path="/vehicles" element={<VehiclesPage />} />
 
-          {/* Kho phụ tùng */}
-          <Route
-            path="/inventory"
-            element={
-              <PlaceholderPage
-                title="Kho phụ tùng"
-                description="Quản lý dữ liệu từ bảng inventory_items."
-              />
-            }
-          />
+          {/* Kho */}
+          <Route path="/warehouses" element={<WarehousesPage />} />
 
-          {/* Kho hàng */}
-          <Route
-            path="/warehouses"
-            element={
-              <PlaceholderPage
-                title="Kho hàng"
-                description="Quản lý dữ liệu từ bảng warehouses."
-              />
-            }
-          />
+          {/* Mặt hàng / phụ tùng */}
+          <Route path="/inventory-items" element={<InventoryItemsPage />}/>
 
           {/* Nhập kho */}
-          <Route
-            path="/stock-imports"
-            element={
-              <PlaceholderPage
-                title="Nhập kho"
-                description="Quản lý dữ liệu từ bảng stock_imports."
-              />
-            }
-          />
+          <Route path="/stock-imports" element={<StockImportsPage/>}/>
 
           {/* Phiếu sửa chữa */}
-          <Route
-            path="/repair-orders"
-            element={
-              <PlaceholderPage
-                title="Phiếu sửa chữa"
-                description="Quản lý dữ liệu từ bảng repair_orders và repair_order_details."
-              />
-            }
-          />
+          <Route path="/repair-orders" element={<RepairOrdersPage/>}/>
         </Route>
       </Route>
 

@@ -11,10 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import {
-  NavLink,
-  Outlet,
-} from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 import { useAuth } from "../../app/providers/AuthProvider";
 
@@ -36,7 +33,7 @@ const navigation = [
   },
   {
     label: "Kho phụ tùng",
-    to: "/inventory",
+    to: "/inventory-items",
     icon: Package,
   },
   {
@@ -59,17 +56,13 @@ const navigation = [
 function AppLayout() {
   const { user, signOut } = useAuth();
 
-  const [mobileOpen, setMobileOpen] =
-    useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleSignOut() {
     try {
       await signOut();
     } catch (error) {
-      console.error(
-        "Không thể đăng xuất:",
-        error,
-      );
+      console.error("Không thể đăng xuất:", error);
     }
   }
 
@@ -166,7 +159,7 @@ function AppLayout() {
             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-red-500/10 hover:text-red-300"
           >
             <LogOut className="size-5" />
-            Đăng xuất
+            <span>Đăng xuất</span>
           </button>
         </div>
       </aside>
@@ -184,7 +177,7 @@ function AppLayout() {
 
           <div className="hidden items-center gap-2 text-sm font-medium text-slate-600 sm:flex">
             <Settings2 className="size-4" />
-            Khu vực quản trị
+            <span>Khu vực quản trị</span>
           </div>
 
           <div className="ml-auto flex items-center gap-3">
@@ -215,6 +208,7 @@ function AppLayout() {
                 key={item.to}
                 to={item.to}
                 end={item.to === "/"}
+                onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   [
                     "flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[11px] font-medium",
