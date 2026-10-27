@@ -1,3 +1,4 @@
+
 import { supabase } from "../../lib/supabase";
 
 import type {
@@ -50,16 +51,7 @@ export async function getInventoryItemById(
     return null;
   }
 
-  return {
-    id: data.id,
-    code: data.code,
-    name: data.name,
-    item_type: data.item_type,
-    unit: data.unit,
-    sell_price: data.sell_price,
-    stock_quantity: data.stock_quantity,
-    created_at: data.created_at,
-  };
+  return data as InventoryItem;
 }
 
 export async function createInventoryItem(
@@ -82,16 +74,7 @@ export async function createInventoryItem(
     throw error;
   }
 
-  return {
-    id: data.id,
-    code: data.code,
-    name: data.name,
-    item_type: data.item_type,
-    unit: data.unit,
-    sell_price: data.sell_price,
-    stock_quantity: data.stock_quantity,
-    created_at: data.created_at,
-  };
+  return data as InventoryItem;
 }
 
 export async function updateInventoryItem(
@@ -116,16 +99,62 @@ export async function updateInventoryItem(
     throw error;
   }
 
-  return {
-    id: data.id,
-    code: data.code,
-    name: data.name,
-    item_type: data.item_type,
-    unit: data.unit,
-    sell_price: data.sell_price,
-    stock_quantity: data.stock_quantity,
-    created_at: data.created_at,
-  };
+  return data as InventoryItem;
+}
+
+/**
+ * Nhập nhiều mặt hàng cùng lúc.
+ * Mã, ID, tồn kho và ngày tạo do database xử lý.
+ */
+export async function importInventoryItems(
+  inputs: InventoryItemFormData[],
+): Promise<InventoryItem[]> {
+  if (inputs.length === 0) {
+    return [];
+  }
+
+  const payload = inputs.map((input) => ({
+    name: input.name.trim(),
+    item_type: input.item_type,
+    unit: input.unit.trim(),
+    sell_price: input.sell_price,
+  }));
+
+  // Chia lô để tránh gửi một request quá lớn.
+  const batchSize = 200;
+  const importedItems: InventoryItem[] = [];
+
+  for (
+    let start = 0;
+    start < payload.length;
+    start += batchSize
+  ) {
+    const batch = payload.slice(
+      start,
+      start + batchSize,
+    );
+
+    const { data, error } = await supabase
+      .from("inventory_items")
+      .insert(batch)
+      .select(INVENTORY_ITEM_SELECT);
+
+    if (error) {
+      throw new Error(
+        `Lỗi khi nhập nhóm mặt hàng từ dòng ${
+          start + 1
+        } đến ${
+          start + batch.length
+        }: ${error.message}`,
+      );
+    }
+
+    importedItems.push(
+      ...((data ?? []) as InventoryItem[]),
+    );
+  }
+
+  return importedItems;
 }
 
 export async function deleteInventoryItem(

@@ -9,6 +9,7 @@ import WarehousesPage from "../../features/warehouses/WarehousesPage";
 import InventoryItemsPage from "../../features/inventory/InventoryItemsPage";
 import StockImportsPage from "../../features/stock-imports/StockImportsPage";
 import RepairOrdersPage from "../../features/repair-orders/RepairOrdersPage";
+import QuickReceptionPage from "../../features/quick-reception/QuickReceptionPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -41,6 +42,9 @@ function AppRoutes() {
 
           {/* Phiếu sửa chữa */}
           <Route path="/repair-orders" element={<RepairOrdersPage/>}/>
+
+          {/* Phiếu sửa chữa nhanh */}
+          <Route path="/quick-reception" element={<QuickReceptionPage/>}/>
         </Route>
       </Route>
 

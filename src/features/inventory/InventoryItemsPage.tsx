@@ -1,5 +1,6 @@
 import {
   AlertCircle,
+  FileSpreadsheet,
   Package,
   Plus,
   RefreshCw,
@@ -27,6 +28,7 @@ import {
 import InventoryItemDetail from "./components/InventoryItemDetail";
 import InventoryItemForm from "./components/InventoryItemForm";
 import InventoryItemTable from "./components/InventoryItemTable";
+import ImportInventoryItemsModal from "./components/ImportInventoryItemsModal";
 
 import type {
   InventoryItem,
@@ -60,21 +62,10 @@ function normalizeVietnamese(value: string): string {
     .trim();
 }
 
-function getSupabaseErrorMessage(
-  error: unknown,
-): string {
-  if (
-    typeof error === "object" &&
-    error !== null
-  ) {
-    const record = error as Record<
-      string,
-      unknown
-    >;
-
-    const code = String(
-      record.code ?? "",
-    );
+function getSupabaseErrorMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null) {
+    const record = error as Record<string, unknown>;
+    const code = String(record.code ?? "");
 
     if (code === "23505") {
       return "Mã mặt hàng đã tồn tại trong hệ thống.";
@@ -88,9 +79,7 @@ function getSupabaseErrorMessage(
       return "Bạn không có quyền thực hiện thao tác này.";
     }
 
-    const message = String(
-      record.message ?? "",
-    );
+    const message = String(record.message ?? "");
 
     if (message) {
       return message;
@@ -101,36 +90,24 @@ function getSupabaseErrorMessage(
 }
 
 function InventoryItemsPage() {
-  const [items, setItems] = useState<
-    InventoryItem[]
-  >([]);
+  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
-
-  const [refreshing, setRefreshing] =
-    useState(false);
-
-  const [submitting, setSubmitting] =
-    useState(false);
-
-  const [deleting, setDeleting] =
-    useState(false);
-
-  const [search, setSearch] =
-    useState("");
-
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const [modal, setModal] =
-    useState<ModalState>({
-      type: null,
-      item: null,
-    });
+  const [modal, setModal] = useState<ModalState>({
+    type: null,
+    item: null,
+  });
 
   const [deleteTarget, setDeleteTarget] =
     useState<InventoryItem | null>(null);
+
+  const [showImportModal, setShowImportModal] =
+    useState(false);
 
   const loadItems = useCallback(
     async (showLoading = true) => {
@@ -143,16 +120,10 @@ function InventoryItemsPage() {
 
         setError(null);
 
-        const data =
-          await getInventoryItems();
-
+        const data = await getInventoryItems();
         setItems(data);
       } catch (loadError) {
-        setError(
-          getSupabaseErrorMessage(
-            loadError,
-          ),
-        );
+        setError(getSupabaseErrorMessage(loadError));
       } finally {
         setLoading(false);
         setRefreshing(false);
@@ -166,29 +137,20 @@ function InventoryItemsPage() {
   }, [loadItems]);
 
   const filteredItems = useMemo(() => {
-    const keyword =
-      normalizeVietnamese(search);
+    const keyword = normalizeVietnamese(search);
 
     if (!keyword) {
       return items;
     }
 
     return items.filter((item) => {
-      const code =
-        normalizeVietnamese(item.code);
+      const code = normalizeVietnamese(item.code);
+      const name = normalizeVietnamese(item.name);
+      const unit = normalizeVietnamese(item.unit);
 
-      const name =
-        normalizeVietnamese(item.name);
-
-      const unit =
-        normalizeVietnamese(item.unit);
-
-      const itemType =
-        normalizeVietnamese(
-          item.item_type === "PART"
-            ? "Phụ tùng"
-            : "Dịch vụ",
-        );
+      const itemType = normalizeVietnamese(
+        item.item_type === "PART" ? "Phụ tùng" : "Dịch vụ",
+      );
 
       return (
         code.includes(keyword) ||
@@ -199,40 +161,26 @@ function InventoryItemsPage() {
     });
   }, [items, search]);
 
-  async function handleSubmit(
-    formData: InventoryItemFormData,
-  ) {
+  async function handleSubmit(formData: InventoryItemFormData) {
     try {
       setSubmitting(true);
       setError(null);
 
-      if (
-        modal.type === "edit" &&
-        modal.item
-      ) {
-        const updated =
-          await updateInventoryItem(
-            modal.item.id,
-            formData,
-          );
+      if (modal.type === "edit" && modal.item) {
+        const updated = await updateInventoryItem(
+          modal.item.id,
+          formData,
+        );
 
         setItems((current) =>
           current.map((item) =>
-            item.id === updated.id
-              ? updated
-              : item,
+            item.id === updated.id ? updated : item,
           ),
         );
       } else {
-        const created =
-          await createInventoryItem(
-            formData,
-          );
+        const created = await createInventoryItem(formData);
 
-        setItems((current) => [
-          created,
-          ...current,
-        ]);
+        setItems((current) => [created, ...current]);
       }
 
       setModal({
@@ -240,11 +188,7 @@ function InventoryItemsPage() {
         item: null,
       });
     } catch (submitError) {
-      setError(
-        getSupabaseErrorMessage(
-          submitError,
-        ),
-      );
+      setError(getSupabaseErrorMessage(submitError));
     } finally {
       setSubmitting(false);
     }
@@ -259,24 +203,15 @@ function InventoryItemsPage() {
       setDeleting(true);
       setError(null);
 
-      await deleteInventoryItem(
-        deleteTarget.id,
-      );
+      await deleteInventoryItem(deleteTarget.id);
 
       setItems((current) =>
-        current.filter(
-          (item) =>
-            item.id !== deleteTarget.id,
-        ),
+        current.filter((item) => item.id !== deleteTarget.id),
       );
 
       setDeleteTarget(null);
     } catch (deleteError) {
-      setError(
-        getSupabaseErrorMessage(
-          deleteError,
-        ),
-      );
+      setError(getSupabaseErrorMessage(deleteError));
     } finally {
       setDeleting(false);
     }
@@ -284,29 +219,22 @@ function InventoryItemsPage() {
 
   function openCreate() {
     setError(null);
-
     setModal({
       type: "create",
       item: null,
     });
   }
 
-  function openEdit(
-    item: InventoryItem,
-  ) {
+  function openEdit(item: InventoryItem) {
     setError(null);
-
     setModal({
       type: "edit",
       item,
     });
   }
 
-  function openDetail(
-    item: InventoryItem,
-  ) {
+  function openDetail(item: InventoryItem) {
     setError(null);
-
     setModal({
       type: "detail",
       item,
@@ -328,6 +256,11 @@ function InventoryItemsPage() {
     setSearch("");
   }
 
+  function handleImported() {
+    setShowImportModal(false);
+    void loadItems(false);
+  }
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -336,32 +269,44 @@ function InventoryItemsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white">
-              <Package size={22} />
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white">
+            <Package size={22} />
+          </div>
 
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-                Danh mục hàng hóa
-              </h1>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Danh mục hàng hóa
+            </h1>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Quản lý phụ tùng và dịch vụ của gara.
-              </p>
-            </div>
+            <p className="mt-1 text-sm text-slate-500">
+              Quản lý phụ tùng và dịch vụ của gara.
+            </p>
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={openCreate}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
-        >
-          <Plus size={18} />
-          Thêm mặt hàng
-        </button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => {
+              setError(null);
+              setShowImportModal(true);
+            }}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          >
+            <FileSpreadsheet size={18} />
+            Nhập từ Excel
+          </button>
+
+          <button
+            type="button"
+            onClick={openCreate}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
+          >
+            <Plus size={18} />
+            Thêm mặt hàng
+          </button>
+        </div>
       </div>
 
       {/* Error */}
@@ -373,9 +318,7 @@ function InventoryItemsPage() {
           />
 
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium">
-              {error}
-            </p>
+            <p className="text-sm font-medium">{error}</p>
           </div>
 
           <button
@@ -401,9 +344,7 @@ function InventoryItemsPage() {
             <input
               type="text"
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Tìm mã, tên, loại hoặc đơn vị..."
               className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900"
             />
@@ -430,21 +371,14 @@ function InventoryItemsPage() {
 
             <button
               type="button"
-              onClick={() =>
-                void loadItems(false)
-              }
+              onClick={() => void loadItems(false)}
               disabled={refreshing}
               className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <RefreshCw
                 size={17}
-                className={
-                  refreshing
-                    ? "animate-spin"
-                    : ""
-                }
+                className={refreshing ? "animate-spin" : ""}
               />
-
               Làm mới
             </button>
           </div>
@@ -462,14 +396,13 @@ function InventoryItemsPage() {
           description={
             search
               ? "Không có mặt hàng nào phù hợp với từ khóa tìm kiếm."
-              : "Hãy thêm mặt hàng đầu tiên để bắt đầu quản lý."
+              : "Hãy thêm mặt hàng đầu tiên hoặc nhập danh sách từ Excel."
           }
           action={
             search
               ? {
                   label: "Xóa tìm kiếm",
-                  onClick:
-                    handleClearSearch,
+                  onClick: handleClearSearch,
                 }
               : {
                   label: "Thêm mặt hàng",
@@ -486,15 +419,14 @@ function InventoryItemsPage() {
         />
       )}
 
-      {/* Modal */}
+      {/* Create / Edit / Detail modal */}
       {modal.type !== null && (
         <div
           className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"
           role="presentation"
           onMouseDown={(event) => {
             if (
-              event.target ===
-                event.currentTarget &&
+              event.target === event.currentTarget &&
               !submitting
             ) {
               closeModal();
@@ -506,22 +438,19 @@ function InventoryItemsPage() {
             role="dialog"
             aria-modal="true"
           >
-            {modal.type === "detail" &&
-              modal.item && (
-                <InventoryItemDetail
-                  item={modal.item}
-                  onClose={closeModal}
-                  onEdit={openEdit}
-                />
-              )}
+            {modal.type === "detail" && modal.item && (
+              <InventoryItemDetail
+                item={modal.item}
+                onClose={closeModal}
+                onEdit={openEdit}
+              />
+            )}
 
             {(modal.type === "create" ||
               modal.type === "edit") && (
               <InventoryItemForm
                 item={
-                  modal.type === "edit"
-                    ? modal.item
-                    : null
+                  modal.type === "edit" ? modal.item : null
                 }
                 submitting={submitting}
                 onSubmit={handleSubmit}
@@ -530,6 +459,15 @@ function InventoryItemsPage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Import Excel modal */}
+      {showImportModal && (
+        <ImportInventoryItemsModal
+          existingItems={items}
+          onClose={() => setShowImportModal(false)}
+          onImported={handleImported}
+        />
       )}
 
       {/* Delete confirmation */}

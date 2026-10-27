@@ -1,6 +1,7 @@
 import {
   Car,
   ClipboardList,
+  ClipboardPlus,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -50,6 +51,12 @@ const navigation = [
     label: "Phiếu sửa chữa",
     to: "/repair-orders",
     icon: ClipboardList,
+  },
+
+  {
+    label: "Phiếu sửa chữa nhanh",
+    to: "/quick-reception",
+    icon: ClipboardPlus,
   },
 ];
 
